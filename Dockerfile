@@ -1,26 +1,29 @@
+# Build stage
 FROM node:18-alpine AS builder
 WORKDIR /app
 
-# Install dependencies
 COPY package*.json ./
 RUN npm install --silent
 
-# Copy source
 COPY . .
-
-# Build the Vite app
 RUN npm run build
 
 # ----------------------------------------------------------
-# FINAL IMAGE: use vite preview server (no nginx, no express)
+# FINAL IMAGE: secure non-root Vite preview server
 # ----------------------------------------------------------
 FROM node:18-alpine
 WORKDIR /app
 
-# Install only prod deps (vite is already inside node_modules)
+# Create non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 80
+# Permissions for non-root user
+RUN chown -R appuser:appgroup /app
 
+USER appuser
+
+EXPOSE 80
 CMD ["npx", "vite", "preview", "--port", "80", "--host"]
