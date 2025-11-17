@@ -1,28 +1,31 @@
 import React, {useState} from 'react'
-import Navbar from './components/Navbar.jsx'
-import Hero from './components/Hero.jsx'
-import About from './components/About.jsx'
-import Skills from './components/Skills.jsx'
-import Experience from './components/Experience.jsx'
-import Education from './components/Education.jsx'
-import Projects from './components/Projects.jsx'
-import Footer from './components/Footer.jsx'
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import Skills from './components/Skills'
+import Projects from './components/Projects'
+import Pipeline from './components/Pipeline'
+import About from './components/About'
+import Experience from './components/Experience'
+import Education from './components/Education'
+import Contact from './components/Contact' 
+import Pipeline from './components/Pipeline'
 
 
 export default function App(){
-const [dark, setDark] = useState(false)
+const [theme,setTheme] = useState('light')
+
+
 return (
-<div className={dark ? 'theme-dark app' : 'theme-light app'}>
-<Navbar dark={dark} setDark={setDark} />
-<main>
+<div className={`theme-${theme}`}>
+<Navbar theme={theme} setTheme={setTheme} />
 <Hero />
-<About />
 <Skills />
 <Projects />
+<Pipeline />
+<About />
 <Experience />
 <Education />
-</main>
-<Footer />
+<Contact />
 </div>
 )
 }

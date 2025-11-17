@@ -1,28 +1,24 @@
 import React from 'react'
-const projects = [
-{name:'DevOps Pipeline Templates', desc:'Reusable Jenkins + Kubernetes templates for CI/CD'},
-{name:'Infrastructure Automation', desc:'PowerShell & Bash tooling for infra management'},
-{name:'Monitoring & Alerts', desc:'Prometheus & Grafana dashboards and alerts'}
+
+
+const repos = [
+{ name:'devops-pipelines', stars:32, updated:'3 days ago', desc:'Reusable Jenkins + K8s Pipelines' },
+{ name:'infra-automation', stars:18, updated:'17 days ago', desc:'PowerShell + Bash Automation Tools' },
 ]
+
+
 export default function Projects(){
 return (
 <section id='projects'>
 <h2>Projects</h2>
-<div className='card'>
-<ul className='project-list'>
-{projects.map(p => (
-<li className='project-item' key={p.name}>
-<div>
-<strong>{p.name}</strong>
-<div className='project-meta'>{p.desc}</div>
+<div className='grid'>
+{repos.map(r => (
+<div className='repo-card' key={r.name}>
+<div className='repo-title'>📦 {r.name}</div>
+<div className='repo-meta'>{r.desc}</div>
+<div className='repo-meta'>★ {r.stars} ⟳ Updated {r.updated}</div>
 </div>
-<div style={{display:'flex',gap:8}}>
-<a href='https://github.com/shalevis' target='_blank' rel='noreferrer'>Code</a>
-<a href='http://linkedin.com/in/shalev-issachar-b8681a383' target='_blank' rel='noreferrer'>Details</a>
-</div>
-</li>
 ))}
-</ul>
 </div>
 </section>
 )

@@ -1,21 +1,25 @@
 import React from 'react'
-export default function Navbar({dark,setDark}){
+export default function Navbar({theme,setTheme}){
 return (
-<nav className='nav' role='navigation' aria-label='main'>
+<nav className='nav'>
 <div className='logo'>Shalev Issachar</div>
-<div style={{display:'flex',alignItems:'center',gap:12}}>
-<div className='links' aria-hidden>
+<div className='links'>
 <a href='#about'>About</a>
 <a href='#skills'>Skills</a>
 <a href='#projects'>Projects</a>
 <a href='#experience'>Experience</a>
-<a href='#education'>Education</a>
 </div>
-<div className='toggle' onClick={() => setDark(!dark)} title='Toggle dark mode' aria-pressed={dark}>
-<div style={{opacity:0.85, fontWeight:600}}>{dark ? 'Dark' : 'Light'}</div>
-<div className='dot' style={{transform: dark ? 'translateX(0)' : 'translateX(0)'}}></div>
-</div>
-</div>
+
+
+<select
+value={theme}
+onChange={(e)=>setTheme(e.target.value)}
+style={{padding:'6px 12px', borderRadius:8, background:'var(--surface)', border:'1px solid var(--border)'}}
+>
+<option value='light'>Apple Light</option>
+<option value='dark'>VSCode Dark</option>
+<option value='neon'>Cyberpunk Neon</option>
+</select>
 </nav>
 )
 }
