@@ -252,3 +252,77 @@ nav.nav .links a:hover::after {
   font-family: var(--code-font);
   margin-top: 20px;
 }
+
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.hero-card {
+  background: var(--surface);
+  padding: 32px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 35px var(--glow);
+  font-family: var(--code-font);
+  min-height: 180px;
+  white-space: pre-line;
+  line-height: 1.5;
+  font-size: 1.15rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Typing animation */
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid var(--accent);
+  white-space: nowrap;
+  animation: typing 3.2s steps(40) 1s forwards,
+             blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  50% { border-color: transparent; }
+}
+
+/* Header inside Hero card */
+.hero-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--accent);
+  text-shadow: 0 0 14px var(--glow);
+}
+
+.hero-sub {
+  font-size: 1.15rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+
+
+
+/* CONTACT PILL UPGRADED */
+.contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--code-font);
+  box-shadow: 0 0 16px var(--glow);
+  margin-top: 6px;
+}
