@@ -11,9 +11,12 @@ import Contact from './components/Contact'
 
 
 export default function App(){
-const [theme,setTheme] = useState('light')
+const [theme, setTheme] = useState("light");
 
-
+  useEffect(() => {
+    document.documentElement.className = "";
+    document.documentElement.classList.add(`theme-${theme}`);
+  }, [theme]);
 return (
 <div className={`theme-${theme}`}>
 <Navbar theme={theme} setTheme={setTheme} />
