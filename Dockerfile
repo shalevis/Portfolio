@@ -9,7 +9,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2 — NGINX server for static hosting
-FROM FROM nginx:1.27.2-alpine3.20
+FROM  nginx:1.27.2-alpine3.20
 
 
 # Create a non-root user and group
@@ -25,7 +25,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 RUN chown -R appuser:appgroup /usr/share/nginx/html
 
 # Switch to secure non-root user
-RUN useradd -m appuser
 USER appuser
 
 
