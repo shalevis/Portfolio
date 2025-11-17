@@ -9,8 +9,10 @@ COPY . .
 RUN npm run build
 
 # Stage 2 — NGINX server for static hosting
-FROM  nginx:1.27.2-alpine3.20
+FROM nginx:1.27.2-alpine3.20
 
+# 🔥 Fix CRITICAL CVE — upgrade Alpine packages (libxml2 -> 2.12.7-r1)
+RUN apk update && apk upgrade
 
 # Create a non-root user and group
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
@@ -26,7 +28,6 @@ RUN chown -R appuser:appgroup /usr/share/nginx/html
 
 # Switch to secure non-root user
 USER appuser
-
 
 EXPOSE 80
 
