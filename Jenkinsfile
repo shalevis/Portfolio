@@ -109,7 +109,7 @@ EOF
               echo "📥 Cloning GitOps repo..."
               git clone https://${GIT_USER}:${GIT_PASS}@github.com/shalevis/portfolio-gitops.git gitops
 
-              cd gitops/helm/shalev-portfolio
+              cd gitops/helm
 
               echo "📝 Updating image tag..."
               sed -i 's/^  tag:.*/  tag: "'${BUILD_NUMBER}'"/' values.yaml
