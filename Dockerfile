@@ -8,22 +8,22 @@ RUN npm install --silent
 COPY . .
 RUN npm run build
 
-# ----------------------------------------------------------
-# FINAL IMAGE: secure non-root Vite preview server
-# ----------------------------------------------------------
+# Production stage
 FROM node:18-alpine
 WORKDIR /app
 
 # Create non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-COPY --from=builder /app/node_modules ./node_modules
+# Install only production deps
+COPY package*.json ./
+RUN npm install --production --silent
+
 COPY --from=builder /app/dist ./dist
+COPY server.js ./
 
-# Permissions for non-root user
 RUN chown -R appuser:appgroup /app
-
 USER appuser
 
 EXPOSE 80
-CMD ["npx", "vite", "preview", "--port", "80", "--host"]
+CMD ["node", "server.js"]
