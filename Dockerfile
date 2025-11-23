@@ -1,28 +1,38 @@
-# Stage 1 — Build the Vite app
+# Stage 1 — Build Vite client
 FROM node:18-alpine AS builder
 WORKDIR /app
 
-COPY package*.json ./
+# Copy only client package files first
+COPY client/package*.json ./
+
 RUN npm install
-COPY . .
+
+# Copy rest of client source
+COPY client/ .
+
 RUN npm run build
 
-# Stage 2 — NGINX for static hosting
+# Stage 2 — Nginx serve
 FROM nginx:1.27.2-alpine3.20
 
 # Create non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-# Copy files
+# Remove default nginx config
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Add custom config to listen on 8080
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy built files
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Change permissions so Nginx can read files as non-root
+# Owner permissions
 RUN chown -R appuser:appgroup /usr/share/nginx/html
 
-# Switch to non-root user
+# Non-root user
 USER appuser
 
-EXPOSE 8080
+EXPOSE 80
 
-# Run nginx on a non-privileged port (NO ROOT)
 CMD ["nginx", "-g", "daemon off;"]
