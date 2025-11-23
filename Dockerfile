@@ -2,10 +2,10 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 
-COPY package*.json ./
+COPY client/package*.json ./
 RUN npm install --silent
 
-COPY . .
+COPY client/* .
 RUN npm run build
 
 # Production stage
@@ -20,10 +20,9 @@ COPY package*.json ./
 RUN npm install --production --silent
 
 COPY --from=builder /app/dist ./dist
-COPY server.js ./
 
 RUN chown -R appuser:appgroup /app
 USER appuser
 
 EXPOSE 80
-CMD ["node", "server.js"]
+CMD ["npm", "run", "dev"]

@@ -1,0 +1,94 @@
+# Default values for helm.
+
+replicaCount: 1
+
+image:
+  repository: shalevi55344/shalev-portfolio
+  pullPolicy: Always
+
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+# ------------------------------
+# FIXED SERVICE SECTION
+# Your app listens on 8080
+# ------------------------------
+service:
+  type: ClusterIP
+  port: 80 # internal container port
+
+
+# ------------------------------
+# FIXED INGRESS (NO HTTPS passthrough!)
+# Your app is HTTP, not HTTPS
+# ------------------------------
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+  hosts:
+    - host: crimson-wolf-15259.zap.cloud
+      paths:
+        - path: /portfolio(/|$)(.*)
+          pathType: Prefix
+  tls: []
+
+httpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs:
+    - name: gateway
+      sectionName: http
+  hostnames:
+    - chart-example.local
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /headers
+
+# resources: {}
+
+
+# livenessProbe:
+#   httpGet:
+#     path: /live
+#     port: 80
+
+# readinessProbe:
+#   httpGet:
+#     path: /ready
+#     port: 80
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+volumes: []
+volumeMounts: []
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+

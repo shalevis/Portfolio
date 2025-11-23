@@ -1,15 +1,29 @@
-Shalev Issachar — Portfolio (Apple-like style)
+# Shalev Issachar — Portfolio (Fullstack)
 
+## Setup (local)
 
-How to build with Docker (included):
-1. Build the image:
-docker build -t shalev-portfolio:latest .
-2. Run the container (port 80):
-docker run --rm -p 80:80 shalev-portfolio:latest
+1. Install root deps:
+   ```
+   npm install
+   ```
 
+2. Install client deps:
+   ```
+   cd client
+   npm install
+   ```
 
-Or using docker-compose:
-docker-compose up --build
+3. Run dev server + client:
+   ```
+   npm run dev
+   ```
 
+Server runs on http://localhost:5000 and client on http://localhost:5173 (proxied for /api).
 
-This project includes dark mode, glass UI, 3D hover effects, animations and Docker support.
+## Build for production
+```
+npm run build
+npm start
+```
+
+Place `public/nature_landing_bg.png` (provided) and `public/your-photo.jpg` (your photo) to customize the site.
