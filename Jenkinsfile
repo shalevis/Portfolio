@@ -20,6 +20,7 @@ pipeline {
     stage('Install Dependencies & Build React App') {
       steps {
         container('node') {
+          dir('client') {
           sh '''
             echo "📦 Installing React app dependencies..."
             npm install
@@ -27,7 +28,7 @@ pipeline {
             echo "🏗️ Building Vite app..."
             npm run build
           '''
-        }
+        }}
       }
     }
 
