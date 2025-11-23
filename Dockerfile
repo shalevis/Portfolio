@@ -13,7 +13,7 @@ COPY client/ .
 RUN npm run build
 
 # Stage 2 — Nginx serve
-FROM nginx:1.27.2-alpine3.20
+FROM nginx:1.27-alpine
 
 # Create non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
