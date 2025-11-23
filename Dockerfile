@@ -1,40 +1,17 @@
-# ----------------------------
-# 1️⃣ Build Stage (Vite React)
-# ----------------------------
-    FROM node:18-alpine AS builder
+# Stage 1 — Build the Vite app
+FROM node:18-alpine AS builder
+WORKDIR /app
 
-    WORKDIR /app
-    
-    # Copy only client dependencies first
-    COPY client/package*.json ./ 
-    RUN npm install --silent
-    
-    # Copy full client project
-    COPY client ./ 
-    RUN npm run build
-    
-    
-    
-    # ----------------------------
-    # 2️⃣ Production Stage (Node Server)
-    # ----------------------------
-    FROM node:18-alpine
-    
-    WORKDIR /app
-    
-    # Copy only production package.json
-    # (Use client/package.json)
-    COPY client/package*.json ./ 
-    RUN npm install --production --silent
-    
-    # Copy built dist folder from builder
-    COPY --from=builder /app/dist ./dist
-    
-    # Create non-root user
-    RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-    RUN chown -R appuser:appgroup /app
-    USER appuser
-    
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build
+
+# Stage 2 — Serve static build using NGINX
+FROM nginx:1.27.2-alpine
+
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80
-CMD ["npm", "run", "dev"]
+CMD ["nginx", "-g", "daemon off;"]
