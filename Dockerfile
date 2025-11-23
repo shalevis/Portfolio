@@ -1,28 +1,40 @@
-# Build stage
-FROM node:18-alpine AS builder
-WORKDIR /app
+# ----------------------------
+# 1️⃣ Build Stage (Vite React)
+# ----------------------------
+    FROM node:18-alpine AS builder
 
-COPY client/package*.json ./
-RUN npm install --silent
-
-COPY client/* ./
-RUN npm run build
-
-# Production stage
-FROM node:18-alpine
-WORKDIR /app
-
-# Create non-root user
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-
-# Install only production deps
-COPY package*.json ./
-RUN npm install --production --silent
-
-COPY --from=builder /app/dist ./dist
-
-RUN chown -R appuser:appgroup /app
-USER appuser
+    WORKDIR /app
+    
+    # Copy only client dependencies first
+    COPY client/package*.json ./ 
+    RUN npm install --silent
+    
+    # Copy full client project
+    COPY client ./ 
+    RUN npm run build
+    
+    
+    
+    # ----------------------------
+    # 2️⃣ Production Stage (Node Server)
+    # ----------------------------
+    FROM node:18-alpine
+    
+    WORKDIR /app
+    
+    # Copy only production package.json
+    # (Use client/package.json)
+    COPY client/package*.json ./ 
+    RUN npm install --production --silent
+    
+    # Copy built dist folder from builder
+    COPY --from=builder /app/dist ./dist
+    
+    # Create non-root user
+    RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+    RUN chown -R appuser:appgroup /app
+    USER appuser
+    
 
 EXPOSE 80
 CMD ["npm", "run", "dev"]
