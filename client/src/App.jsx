@@ -228,16 +228,7 @@ function Projects() {
       ]
     },
 
-    // 👉 Add any other hard-coded projects here:
-    {
-      id: "local-2",
-      title: "Infrastructure Automation Toolkit",
-      desc: "A full automation suite for provisioning Linux/Windows servers, deploying services, managing storage, handling backups and automating CI/CD flows across hybrid infrastructure.",
-      tech: [
-        "Python", "Bash", "PowerShell",
-        "Terraform", "Ansible", "VMware", "NetApp"
-      ]
-    },
+   
     {
      id: "local-3",
       title: "Kubernetes Migration",
@@ -246,10 +237,11 @@ function Projects() {
     },
     {
       id: "local-4",
-      title: "CI/CD Automation",
-      desc: "Built multi-stage Jenkins pipelines with Trivy scanning, secret rotation, and automated deployments.",
-      tech: ["Jenkins", "Terraform", "Trivy"]
-    },
+      title: "Infrastructure VM Template Deployment",
+      desc: "Implemented a CI/CD pipeline in Jenkins to automate VMware VM template provisioning and customization using Infrastructure-as-Code workflows.",
+      tech: ["Jenkins", "VMware", "Terraform"]
+    }
+    ,
       {
       id: "local-5",
       title: "Enterprise Git Migration & Repository Standardization",
