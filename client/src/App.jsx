@@ -36,7 +36,7 @@ export default function App() {
   };
 
 return (
-  <div className="h-screen overflow-hidden font-sans">
+  <div className="h-screen  font-sans">
     <StyleBlock />
     <Navbar route={route} navigate={navigate} theme={theme} setTheme={setTheme} profile={profile} />
    <main className="transition-wrapper">
@@ -94,7 +94,7 @@ function Home({ navigate, profile }) {
     minHeight: 'calc(100vh - 120px)',
     marginTop: '80px',
     overflow: 'hidden',
-    backgroundImage: "url('/nature_landing_bg.png')",
+    backgroundImage: "url('./nature_landing_bg.png')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   }}
@@ -428,9 +428,13 @@ function StyleBlock(){
     <style>{`
       :root{ --bg:#f6f7fb; --panel:#ffffff; --text:#0b1220; --muted:#6b7280; --glass: rgba(255,255,255,0.6); --accent-start:#10b981; --accent-end:#065f46; }
       [data-theme='dark']{ --bg:#0b0e14; --panel:#0f1724; --text:#d4d4d4; --muted:#94a3b8; --glass: rgba(10,14,24,0.6); --accent-start:#22c55e; --accent-end:#065f46; }
+html, body, div, span, p, h1, h2, h3, h4, h5, h6 {
+  caret-color: transparent !important;
+}
 
       html,body,#root{ height:100%; }
-      body{ background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'; }
+      
+      body{  cursor: pointer; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'; }
       .nav-bg{ background: linear-gradient(to right, rgba(255,255,255,0.85), rgba(255,255,255,0.7)); backdrop-filter: blur(6px); transition: background 0.3s ease; }
       [data-theme='dark'] .nav-bg{ background: linear-gradient(to right, rgba(12,14,20,0.85), rgba(12,14,20,0.75)); }
 
