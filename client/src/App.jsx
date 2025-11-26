@@ -164,7 +164,7 @@ function Home({ navigate, profile }) {
     minHeight: 'calc(100vh - 120px)',
     marginTop: '80px',
     overflow: 'hidden',
-    backgroundImage: "url('nature_landing_bg.png')",
+    backgroundImage: "url('/portfolio/nature_landing_bg.png')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   }}
@@ -571,12 +571,12 @@ backdrop-filter: blur(6px);
 }
 
 .overlay-content button:hover {
-  color: var(--accent-end);
+  color: linear-gradient(90deg,#22c55e,#065f46);
   transform: scale(1.05);
 }
 
 .m-active {
-  color: var(--accent-end) !important;
+  color: linear-gradient(90deg,#22c55e,#065f46) !important;
   text-decoration: underline;
 }
 
