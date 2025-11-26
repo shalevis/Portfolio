@@ -53,10 +53,19 @@ return (
 );
 }
 
-function Navbar({ route, navigate, theme, setTheme, profile }){
+function Navbar({ route, navigate, theme, setTheme, profile }) {
+  const [open, setOpen] = useState(false);
+
+  const go = (to) => {
+    navigate(to);
+    setOpen(false);
+  };
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 nav-bg">
+    <nav className="fixed top-0 left-0 w-full z-50 nav-bg border-b border-white/10">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+
+        {/* LEFT SIDE - LOGO */}
         <div className="flex items-center gap-4">
           <div className="logo">SI</div>
           <div>
@@ -65,6 +74,7 @@ function Navbar({ route, navigate, theme, setTheme, profile }){
           </div>
         </div>
 
+        {/* DESKTOP NAV */}
         <ul className="hidden md:flex items-center gap-6">
           <li className={route==='home'? 'active-link':''} onClick={()=>navigate('home')}>Home</li>
           <li className={route==='about'? 'active-link':''} onClick={()=>navigate('about')}>About</li>
@@ -78,13 +88,39 @@ function Navbar({ route, navigate, theme, setTheme, profile }){
           </li>
         </ul>
 
-        <div className="md:hidden">
-          <button className="theme-btn" onClick={()=>setTheme(t=> t==='light' ? 'dark' : 'light')}>{theme==='light' ? '🌙' : '☀️'}</button>
+        {/* MOBILE BUTTONS */}
+        <div className="md:hidden flex items-center gap-3">
+          <button className="theme-btn" onClick={()=>setTheme(t=> t==='light' ? 'dark' : 'light')}>
+            {theme==='light' ? '🌙' : '☀️'}
+          </button>
+
+          {/* HAMBURGER */}
+          <button className="hamburger-btn" onClick={() => setOpen(!open)}>
+            {open ? "✖" : "☰"}
+          </button>
         </div>
       </div>
+
+      {/* MOBILE DROPDOWN */}
+      {/* FULLSCREEN MOBILE MENU */}
+<div className={`mobile-overlay ${open ? "show" : ""}`}>
+<button className="overlay-exit" onClick={() => setOpen(false)}>✕</button>
+
+<div className="overlay-content">
+  <button onClick={() => go("home")} className={route==="home" ? "m-active" : ""}>Home</button>
+  <button onClick={() => go("about")} className={route==="about" ? "m-active" : ""}>About</button>
+  <button onClick={() => go("projects")} className={route==="projects" ? "m-active" : ""}>Projects</button>
+  <button onClick={() => go("experience")} className={route==="experience" ? "m-active" : ""}>Experience</button>
+  <button onClick={() => go("contact")} className={route==="contact" ? "m-active" : ""}>Contact</button>
+</div>
+
+</div>
+
     </nav>
   );
 }
+
+
 function Home({ navigate, profile }) {
   return (
     <section
@@ -418,55 +454,282 @@ text-xs  backdrop-blur-md  border-t border-white/10 z-[9999]">
 function StyleBlock(){
   return (
     <style>{`
-      :root{ --bg:#f6f7fb; --panel:#ffffff; --text:#0b1220; --muted:#6b7280; --glass: rgba(255,255,255,0.6); --accent-start:#10b981; --accent-end:#065f46; }
-      [data-theme='dark']{ --bg:#0b0e14; --panel:#0f1724; --text:#d4d4d4; --muted:#94a3b8; --glass: rgba(10,14,24,0.6); --accent-start:#22c55e; --accent-end:#065f46; }
+      /* ===== ROOT COLORS ===== */
+:root{
+  --bg:#f6f7fb;
+  --panel:#ffffff;
+  --text:#0b1220;
+  --muted:#6b7280;
+  --glass: rgba(255,255,255,0.6);
+  --accent-start:#10b981;
+  --accent-end:#065f46;
+}
+
+[data-theme='dark']{
+  --bg:#0b0e14;
+  --panel:#0f1724;
+  --text:#d4d4d4;
+  --muted:#94a3b8;
+  --glass: rgba(10,14,24,0.6);
+  --accent-start:#22c55e;
+  --accent-end:#065f46;
+}
+
+/* Disable cursor text-selection caret on click */
 html, body, div, span, p, h1, h2, h3, h4, h5, h6 {
   caret-color: transparent !important;
 }
 
-      html,body,#root{ height:100%; }
-      
-      body{  cursor: pointer; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'; }
-      .nav-bg{ background: linear-gradient(to right, rgba(255,255,255,0.85), rgba(255,255,255,0.7)); backdrop-filter: blur(6px); transition: background 0.3s ease; }
-      [data-theme='dark'] .nav-bg{ background: linear-gradient(to right, rgba(12,14,20,0.85), rgba(12,14,20,0.75)); }
+html,body,#root{
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter, system-ui, sans-serif;
+}
+/* ===== MOBILE NAVBAR ===== */
+.hamburger-btn {
+  font-size: 26px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+}
 
-      .logo{ width:48px; height:48px; border-radius:10px; background:var(--panel); display:flex; align-items:center; justify-content:center; font-weight:700; box-shadow: 0 6px 22px rgba(2,6,23,0.12); }
-      .text-muted{ color:var(--muted); }
-      .card{ background:var(--panel); border-radius:12px; box-shadow:0 10px 30px rgba(2,6,23,0.06); padding:18px; transition: transform 0.25s ease, box-shadow 0.25s ease; }
-      .card:hover{ transform: translateY(-6px); box-shadow:0 18px 40px rgba(2,6,23,0.12); }
+/* =======================
+   FULLSCREEN MOBILE MENU
+   ======================= */
+/* =======================
+   FULLSCREEN MOBILE MENU
+   ======================= */
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 
-      .hero{ display:flex; align-items:center; justify-content:center; }
-      .glass{ background:var(--glass); border-radius:14px; padding:2.5rem; }
-      .hero-title{ font-size:42px; font-weight:800; margin-bottom:8px; color:var(--text); }
-      .hero-sub{ color:var(--muted); font-size:18px; }
+  /* Dynamically uses light or dark theme */
+  background: color-mix(in srgb, var(--bg) 92%, black);
 
-      .cta{ background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white; padding:10px 18px; border-radius:10px; font-weight:600; border:none; cursor:pointer; box-shadow:0 10px 30px rgba(2,6,23,0.12); transition: transform 0.18s ease; }
-      .cta:hover{ transform: translateY(-3px); }
-      .cta.outline{ background:transparent; color:var(--text); border:1px solid rgba(15,23,42,0.06); }
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
 
-      .stats-grid{ display:flex; gap:20px; justify-content:flex-start; margin-top:22px; }
-      .stat{ text-align:left; }
-      .stat-num{ font-weight:700; font-size:18px; }
-      .stat-label{ color:var(--muted); font-size:13px; }
+.mobile-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
 
-      .tag{ background:transparent; border:1px solid rgba(15,23,42,0.06); padding:6px 10px; border-radius:8px; font-size:14px; }
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  padding-top: 110px;
+  gap: 22px;
+  text-align: center;
+}
 
-      .timeline{ border-left:3px solid rgba(34,197,94,0.12); padding-left:18px; }
-      .timeline-item{ display:flex; gap:14px; margin-bottom:18px; }
-      .timeline-year{ min-width:110px; color:var(--muted); font-weight:700; }
+.overlay-content button {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text);
+  background: none;
+  border: none;
+  padding: 14px;
+  width: 100%;
+}
 
-      .chip{ background:transparent; border:1px solid rgba(15,23,42,0.06); padding:6px 8px; border-radius:8px; font-size:12px; }
+.overlay-content button:hover {
+  color: var(--accent-end);
+  transform: scale(1.05);
+}
 
-      .input{ width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(15,23,42,0.06); background:var(--panel); color:var(--text); }
+.m-active {
+  color: var(--accent-end) !important;
+  text-decoration: underline;
+}
 
-      .active-link{ font-weight:700; position:relative; }
-      .active-link::after{ content:''; position:absolute; left:0; bottom:-8px; width:100%; height:3px; background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); border-radius:4px; }
 
-      .theme-btn{ background:transparent; border:none; padding:6px 8px; border-radius:8px; cursor:pointer; }
+.overlay-exit {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  font-size: 32px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  z-index: 10000;
+  transition: transform .2s ease, color .2s ease;
+}
 
-      .bg-footer{ background: linear-gradient(90deg, rgba(15,23,42,0.06), rgba(15,23,42,0.02)); padding-top:8px; padding-bottom:8px; }
+.overlay-exit:hover {
+  transform: scale(1.15);
+  color: var(--accent-end);
+}
 
-      @media (max-width:768px){ .stats-grid{ flex-direction:column; } .hero-title{ font-size:32px;
+.logo{
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--panel);
+  box-shadow:0 4px 18px rgba(0,0,0,0.18);
+}
+
+/* ===== CARDS ===== */
+.card{
+  background:var(--panel);
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 10px 30px rgba(2,6,23,0.06);
+  transition:0.25s;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+}
+
+/* ===== HERO / HOME SECTION ===== */
+section[aria-label="Home"]{
+  height:calc(100vh - 100px);
+  min-height:500px;
+}
+
+@media (max-width:768px){
+  section[aria-label="Home"]{
+    height:auto;
+    min-height:90vh;
+    padding-bottom:40px;
+    background-position:center top;
+  }
+}
+
+/* ===== BUTTONS ===== */
+.cta{
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:600;
+  box-shadow:0 5px 20px rgba(2,6,23,0.15);
+  font-size:15px;
+}
+
+@media (max-width:480px){
+  .cta{
+    width:100%;
+    text-align:center;
+    font-size:14px;
+    padding:12px;
+  }
+
+  .cta + .cta{
+    margin-top:8px;
+  }
+}
+
+/* ===== GRID FIXES FOR MOBILE ===== */
+@media (max-width:768px){
+  .grid{
+    grid-template-columns:1fr !important;
+  }
+}
+
+/* PROJECT GRID FIX */
+@media (max-width:768px){
+  .max-w-6xl > .grid{
+    grid-template-columns:1fr !important;
+    gap:18px;
+  }
+}
+
+/* ===== TIMELINE ===== */
+.timeline{
+  border-left:3px solid rgba(34,197,94,0.18);
+  padding-left:14px;
+}
+  @keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.25s ease-out;
+}
+
+/* Make mobile menu match theme properly */
+[data-theme='dark'] .mobile-menu {
+  background: rgba(12,14,20,0.95);
+}
+
+.timeline-item{
+  display:flex;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.timeline-year{
+  min-width:100px;
+  font-weight:700;
+  color:var(--muted);
+}
+
+@media (max-width:600px){
+  .timeline-item{
+    flex-direction:column;
+  }
+
+  .timeline-year{
+    min-width:auto;
+    font-size:14px;
+    margin-bottom:4px;
+  }
+}
+
+/* ===== GENERAL MOBILE TYPOGRAPHY ===== */
+@media (max-width:768px){
+  h1{ font-size:32px !important; line-height:1.2; }
+  h2{ font-size:28px !important; }
+  h3{ font-size:20px !important; }
+  p{ font-size:15px; }
+}
+
+/* ===== PREVENT HORIZONTAL SCROLL ===== */
+*{
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+/* ===== FOOTER MOBILE FIX ===== */
+footer{
+  height:46px;
+  font-size:11px;
+}
+
+@media (max-width:540px){
+  footer{
+    position:static;
+    margin-top:30px;
+    padding:14px 0;
+  }
+}
+
+/* ===== RESPONSIVE NAV BUTTONS ===== */
+@media (max-width:768px){
+  nav ul{
+    display:none !important;
+  }
+}
+
       
       } }
     `}</style>
