@@ -94,7 +94,7 @@ function Home({ navigate, profile }) {
     minHeight: 'calc(100vh - 120px)',
     marginTop: '80px',
     overflow: 'hidden',
-    backgroundImage: "url('./nature_landing_bg.png')",
+    backgroundImage: "url('nature_landing_bg.png')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   }}
