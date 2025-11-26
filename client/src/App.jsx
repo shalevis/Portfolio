@@ -62,63 +62,97 @@ function Navbar({ route, navigate, theme, setTheme, profile }) {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 nav-bg border-b border-white/10">
+    <nav
+      className="
+        fixed top-0 left-0 w-full z-50
+        backdrop-blur-md
+        border-b
+      "
+      style={{
+        background: "var(--glass)",
+        borderColor: "var(--glass)"
+      }}
+    >
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
 
         {/* LEFT SIDE - LOGO */}
         <div className="flex items-center gap-4">
-          <div className="logo">SI</div>
+          <div className="logo" style={{ color: "var(--text)" }}>SI</div>
           <div>
-            <div className="font-bold">{profile?.name || 'Shalev Issachar'}</div>
-            <div className="text-xs text-muted">{profile?.title || 'DevOps & Infrastructure Engineer'}</div>
+            <div className="font-bold" style={{ color: "var(--text)" }}>
+              {profile?.name || 'Shalev Issachar'}
+            </div>
+            <div className="text-xs" style={{ color: "var(--muted)" }}>
+              {profile?.title || 'DevOps & Infrastructure Engineer'}
+            </div>
           </div>
         </div>
 
-        {/* DESKTOP NAV */}
-        <ul className="hidden md:flex items-center gap-6">
+        {/* DESKTOP NAV (CENTERED) */}
+        <ul
+          className="hidden md:flex items-center gap-8 text-sm font-medium absolute left-1/2 -translate-x-1/2"
+          style={{ color: "var(--text)" }}
+        >
           <li className={route==='home'? 'active-link':''} onClick={()=>navigate('home')}>Home</li>
           <li className={route==='about'? 'active-link':''} onClick={()=>navigate('about')}>About</li>
           <li className={route==='projects'? 'active-link':''} onClick={()=>navigate('projects')}>Projects</li>
           <li className={route==='experience'? 'active-link':''} onClick={()=>navigate('experience')}>Experience</li>
           <li className={route==='contact'? 'active-link':''} onClick={()=>navigate('contact')}>Contact</li>
-          <li>
-            <button className="theme-btn" onClick={()=>setTheme(t=> t==='light' ? 'dark' : 'light')}>
-              {theme==='light' ? '🌙 Dark' : '☀️ Light'}
-            </button>
-          </li>
         </ul>
+
+        {/* RIGHT SIDE THEME BUTTON (DESKTOP ONLY) */}
+        <div className="hidden md:flex items-center">
+          <button
+            className="theme-btn"
+            onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}
+            style={{ color: "var(--text)" }}
+          >
+            {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+          </button>
+        </div>
 
         {/* MOBILE BUTTONS */}
         <div className="md:hidden flex items-center gap-3">
-          <button className="theme-btn" onClick={()=>setTheme(t=> t==='light' ? 'dark' : 'light')}>
-            {theme==='light' ? '🌙' : '☀️'}
+          <button
+            className="theme-btn"
+            onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}
+            style={{ color: "var(--text)" }}
+          >
+            {theme === 'light' ? '🌙' : '☀️'}
           </button>
 
-          {/* HAMBURGER */}
-          <button className="hamburger-btn" onClick={() => setOpen(!open)}>
+          <button
+            className="hamburger-btn"
+            onClick={() => setOpen(!open)}
+            style={{ color: "var(--text)" }}
+          >
             {open ? "✖" : "☰"}
           </button>
         </div>
       </div>
 
-      {/* MOBILE DROPDOWN */}
       {/* FULLSCREEN MOBILE MENU */}
-<div className={`mobile-overlay ${open ? "show" : ""}`}>
-<button className="overlay-exit" onClick={() => setOpen(false)}>✕</button>
+      <div className={`mobile-overlay ${open ? "show" : ""}`}>
+        <button
+          className="overlay-exit"
+          onClick={() => setOpen(false)}
+          style={{ color: "var(--text)" }}
+        >
+          ✕
+        </button>
 
-<div className="overlay-content">
-  <button onClick={() => go("home")} className={route==="home" ? "m-active" : ""}>Home</button>
-  <button onClick={() => go("about")} className={route==="about" ? "m-active" : ""}>About</button>
-  <button onClick={() => go("projects")} className={route==="projects" ? "m-active" : ""}>Projects</button>
-  <button onClick={() => go("experience")} className={route==="experience" ? "m-active" : ""}>Experience</button>
-  <button onClick={() => go("contact")} className={route==="contact" ? "m-active" : ""}>Contact</button>
-</div>
-
-</div>
-
+        <div className="overlay-content">
+          <button onClick={() => go("home")} className={route==="home" ? "m-active" : ""}>Home</button>
+          <button onClick={() => go("about")} className={route==="about" ? "m-active" : ""}>About</button>
+          <button onClick={() => go("projects")} className={route==="projects" ? "m-active" : ""}>Projects</button>
+          <button onClick={() => go("experience")} className={route==="experience" ? "m-active" : ""}>Experience</button>
+          <button onClick={() => go("contact")} className={route==="contact" ? "m-active" : ""}>Contact</button>
+        </div>
+      </div>
     </nav>
   );
 }
+
 
 
 function Home({ navigate, profile }) {
@@ -495,28 +529,23 @@ html,body,#root{
   color: var(--text);
 }
 
-/* =======================
-   FULLSCREEN MOBILE MENU
-   ======================= */
-/* =======================
-   FULLSCREEN MOBILE MENU
-   ======================= */
+
 .mobile-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 
-  /* Dynamically uses light or dark theme */
-  background: color-mix(in srgb, var(--bg) 92%, black);
+background: color-mix(in srgb, var(--bg) 92%, black); 
+backdrop-filter: blur(6px);
 
-  backdrop-filter: blur(6px);
   z-index: 9999;
   opacity: 0;
   pointer-events: none;
   transition: opacity .25s ease;
 }
+
 
 .mobile-overlay.show {
   opacity: 1;
